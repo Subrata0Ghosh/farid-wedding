@@ -876,94 +876,6 @@
             color: #ffffff;
         }
 
-        /* ==================== WISHES / RSVP GUESTBOOK ==================== */
-        .wishes-section {
-            background: #fff9f4;
-            border-radius: 20px;
-            padding: 26px 20px;
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            margin-bottom: 30px;
-        }
-
-        .wish-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 520px;
-            margin: 0 auto 24px;
-        }
-
-        .wish-input, .wish-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1.5px solid rgba(212, 175, 55, 0.5);
-            background: #ffffff;
-            font-family: inherit;
-            font-size: 14px;
-            color: var(--text-dark);
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .wish-input:focus, .wish-textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(122, 19, 21, 0.12);
-        }
-
-        .wish-textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .wishes-feed {
-            max-height: 280px;
-            overflow-y: auto;
-            padding: 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .wishes-feed::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .wishes-feed::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 10px;
-        }
-
-        .wish-bubble {
-            background: #ffffff;
-            padding: 14px 16px;
-            border-radius: 14px;
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        .wish-bubble-author {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .wish-bubble-time {
-            font-size: 11px;
-            color: #a09090;
-            font-weight: normal;
-        }
-
-        .wish-bubble-message {
-            font-size: 13px;
-            color: var(--text-dark);
-            margin-top: 4px;
-            line-height: 1.5;
-        }
 
         /* ==================== FOOTER & SHARING ==================== */
         .footer-note {
@@ -1209,10 +1121,10 @@
                     <div class="person-card">
                         <span class="person-role">🤵 বর (The Groom)</span>
                         <h3 class="person-name">Mr. Farid Rahaman</h3>
-                        <p style="font-size: 15px; color: var(--primary); font-weight: 700; margin-bottom: 6px;">ফরিদ রহমান</p>
+                        <p style="font-size: 16px; color: var(--primary); font-weight: 700; margin-bottom: 6px;">ফরিদ রহমান</p>
                         <p class="person-desc">
-                            <strong>Son of:</strong> Mr, Firoj Rahaman & Fatema Rahaman<br>
-                            <span style="font-size: 12px; color: var(--text-muted);">(পিতা: জনাব ফিরোজ রহমান, মাতা: ফাতেমা রহমান)</span><br>
+                            <span style="font-size: 14px; color: var(--text-dark); font-weight: 600;">পিতা: ফিরোজ রহমান &nbsp;|&nbsp; মাতা: ফাতেমা রহমান</span><br>
+                            <span style="font-size: 12px; color: var(--text-muted);">(Son of: Mr, Firoj Rahaman & Fatema Rahaman)</span><br>
                             <span style="display: inline-block; margin-top: 8px; color: var(--primary); font-weight: 600; background: #fff5ea; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.4);">
                                 <i class="fa-solid fa-house-chimney" style="color: var(--gold-dark);"></i> From - Dhandanga, Salar, Murshidabad
                             </span>
@@ -1223,10 +1135,10 @@
                     <div class="person-card">
                         <span class="person-role">👰 কনে (The Bride)</span>
                         <h3 class="person-name">Miss. Tajima Sultana</h3>
-                        <p style="font-size: 15px; color: var(--primary); font-weight: 700; margin-bottom: 6px;">তাজিমা সুলতানা</p>
+                        <p style="font-size: 16px; color: var(--primary); font-weight: 700; margin-bottom: 6px;">তাজিমা সুলতানা</p>
                         <p class="person-desc">
-                            <strong>Daughter of:</strong> Mr, Mahatasib Sekh & Hekima Khatun<br>
-                            <span style="font-size: 12px; color: var(--text-muted);">(পিতা: জনাব মহতাসিব সেখ, মাতা: হেকিমা খাতুন)</span><br>
+                            <span style="font-size: 14px; color: var(--text-dark); font-weight: 600;">পিতা: মহাতাশিব শেখ &nbsp;|&nbsp; মাতা: হেকিমা খাতুন</span><br>
+                            <span style="font-size: 12px; color: var(--text-muted);">(Daughter of: Mr, Mahatasib Sekh & Hekima Khatun)</span><br>
                             <span style="display: inline-block; margin-top: 8px; color: var(--primary); font-weight: 600; background: #fff5ea; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.4);">
                                 <i class="fa-solid fa-house-chimney" style="color: var(--gold-dark);"></i> From - Kojalsa, Ketugram, Purba Bardhaman
                             </span>
@@ -1364,26 +1276,6 @@
                     </div>
                 </section>
 
-                <!-- Guest Wishes & Blessing Board (Interactive RSVP) -->
-                <section class="wishes-section">
-                    <div style="text-align: center; margin-bottom: 18px;">
-                        <h3 style="color: var(--primary); font-size: 20px; font-weight: 700;">দোয়া ও শুভকামনা</h3>
-                        <p style="color: var(--text-muted); font-size: 13px;">নবদম্পতির উদ্দেশ্যে আপনার ভালোবাসাময় দোয়া ও শুভবার্তা লিখুন</p>
-                    </div>
-
-                    <form class="wish-form" id="wishForm" onsubmit="handleWishSubmit(event)">
-                        <input type="text" id="guestName" class="wish-input" placeholder="আপনার নাম লিখুন..." required>
-                        <textarea id="guestMessage" class="wish-textarea" placeholder="আপনার দোয়া ও শুভকামনা বার্তা..." required></textarea>
-                        <button type="submit" class="action-btn btn-gold" style="justify-content: center;">
-                            <i class="fa-solid fa-paper-plane"></i> শুভকামনা পাঠান
-                        </button>
-                    </form>
-
-                    <!-- Feed of Wishes -->
-                    <div class="wishes-feed" id="wishesFeed">
-                        <!-- Dynamic wishes rendered by JS -->
-                    </div>
-                </section>
 
                 <!-- Footer Note -->
                 <footer class="footer-note">
@@ -1683,96 +1575,13 @@
             }
         }
 
-        // 5. GUESTBOOK / DUA & WISHES SYSTEM
-        const defaultWishes = [
-            {
-                name: "হাজী মোহাম্মদ রফিকুল ইসলাম",
-                message: "মাশাআল্লাহ! আল্লাহ তোমাদের নতুন জীবনে অফুরন্ত বরকত ও সুখ দান করুন। শুভকামনা রইলো!",
-                time: "১০ মিনিট আগে"
-            },
-            {
-                name: "শায়লা রহমান ও পরিবার",
-                message: "Heartiest congratulations to Farid and Tajima! Wishing you both a lifetime of happiness, love and peace.",
-                time: "২৫ মিনিট আগে"
-            },
-            {
-                name: "তানভীর আহমেদ",
-                message: "শুভ বিবাহ! দোয়া করি তোমাদের যৌথ জীবন সবসময় যেন আনন্দে উজ্জ্বল থাকে।",
-                time: "১ ঘণ্টা আগে"
-            }
-        ];
-
-        function loadWishes() {
-            let saved = [];
-            try {
-                saved = JSON.parse(localStorage.getItem('wedding_wishes_ft')) || [];
-            } catch (e) {
-                saved = [];
-            }
-            const allWishes = [...saved, ...defaultWishes];
-            const feed = document.getElementById("wishesFeed");
-            feed.innerHTML = "";
-
-            allWishes.forEach(item => {
-                const bubble = document.createElement("div");
-                bubble.className = "wish-bubble";
-                bubble.innerHTML = `
-                    <div class="wish-bubble-author">
-                        <span><i class="fa-solid fa-heart" style="color: #d63031; font-size: 11px; margin-right: 5px;"></i> ${escapeHtml(item.name)}</span>
-                        <span class="wish-bubble-time">${item.time || "সম্প্রতি"}</span>
-                    </div>
-                    <p class="wish-bubble-message">${escapeHtml(item.message)}</p>
-                `;
-                feed.appendChild(bubble);
-            });
-        }
-
-        function handleWishSubmit(e) {
-            e.preventDefault();
-            const nameInput = document.getElementById("guestName");
-            const msgInput = document.getElementById("guestMessage");
-
-            const name = nameInput.value.trim();
-            const message = msgInput.value.trim();
-
-            if (!name || !message) return;
-
-            const newWish = {
-                name: name,
-                message: message,
-                time: "এইমাত্র"
-            };
-
-            let saved = [];
-            try {
-                saved = JSON.parse(localStorage.getItem('wedding_wishes_ft')) || [];
-            } catch (e) {}
-
-            saved.unshift(newWish);
-            localStorage.setItem('wedding_wishes_ft', JSON.stringify(saved));
-
-            loadWishes();
-            nameInput.value = "";
-            msgInput.value = "";
-
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 40,
-                    spread: 60,
-                    origin: { y: 0.8 }
-                });
-            }
-
-            showToast("আপনার সুন্দর দোয়া ও শুভকামনা গৃহীত হয়েছে! ❤️");
-        }
-
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // 6. SHARING & CALENDAR INTEGRATIONS
+        // 5. SHARING & CALENDAR INTEGRATIONS
         function getShareUrl() {
             return window.location.href;
         }
@@ -1840,7 +1649,7 @@
 
         // Initialize on page load
         document.addEventListener("DOMContentLoaded", () => {
-            loadWishes();
+            // Ready
         });
     </script>
 </body>
