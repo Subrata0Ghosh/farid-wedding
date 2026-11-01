@@ -930,6 +930,43 @@
             animation: musicRotate 4s linear infinite;
         }
 
+        .float-btn.music-muted {
+            background: #2b0608;
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #d1d5db;
+            animation: none !important;
+            opacity: 0.85;
+        }
+
+        .music-pill-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(122, 19, 21, 0.08);
+            border: 1px solid var(--gold);
+            color: var(--primary);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            vertical-align: middle;
+            font-family: inherit;
+        }
+
+        .music-pill-btn:hover {
+            background: var(--gold-gradient);
+            color: #2b0608;
+            transform: translateY(-1px);
+        }
+
+        .music-pill-btn.muted {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: #cbd5e1;
+            color: #64748b;
+        }
+
         @keyframes musicRotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -1071,8 +1108,13 @@
                     <p class="header-subtag" style="letter-spacing: 1.5px; font-size: 12px; text-transform: none;">
                         In the name of ALLAH, the Most Beneficent, the Most Merciful
                     </p>
-                    <div class="wedding-badge">
-                        <i class="fa-solid fa-dove"></i> শুভ বিবাহ ও সংবর্ধনা <i class="fa-solid fa-dove"></i>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px auto 16px;">
+                        <div class="wedding-badge" style="margin: 0;">
+                            <i class="fa-solid fa-dove"></i> শুভ বিবাহ ও সংবর্ধনা <i class="fa-solid fa-dove"></i>
+                        </div>
+                        <button class="music-pill-btn" id="headerMusicBtn" onclick="toggleMusic()" title="মিউজিক বন্ধ / চালু করুন" style="margin: 0;">
+                            <i class="fa-solid fa-volume-high"></i> <span>Music: ON</span>
+                        </button>
                     </div>
                 </div>
 
@@ -1299,11 +1341,13 @@
 
     <!-- ================= AUDIO & SCRIPTS ================= -->
     <script>
-        // 1. SOUND & AUDIO SYSTEM (With Web Audio API Synthesizer fallback)
+        // 1. SOUND & AUDIO SYSTEM (Web Audio API Synthesizer)
         let audioContext = null;
         let isMusicPlaying = false;
+        let userExplicitlyMuted = false;
         let ambientGain = null;
         let melodyInterval = null;
+        let activeOscillators = [];
 
         // Soft Pentatonic Wedding Scale Frequencies (Dreamy soothing arpeggio)
         const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
@@ -1313,6 +1357,8 @@
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!audioContext && AudioCtx) {
                     audioContext = new AudioCtx();
+                }
+                if (audioContext && !ambientGain) {
                     ambientGain = audioContext.createGain();
                     ambientGain.gain.setValueAtTime(0.08, audioContext.currentTime);
                     ambientGain.connect(audioContext.destination);
@@ -1323,7 +1369,8 @@
         }
 
         function playSoftNote(freq, duration = 1.4) {
-            if (!audioContext || audioContext.state !== 'running') return;
+            if (!isMusicPlaying) return;
+            if (!audioContext || audioContext.state !== 'running' || !ambientGain) return;
             try {
                 const osc = audioContext.createOscillator();
                 const noteGain = audioContext.createGain();
@@ -1340,21 +1387,79 @@
 
                 osc.start();
                 osc.stop(audioContext.currentTime + duration);
+
+                activeOscillators.push(osc);
+                osc.onended = () => {
+                    activeOscillators = activeOscillators.filter(o => o !== osc);
+                };
             } catch (err) {
                 // Ignore audio glitch
             }
         }
 
+        function syncMusicButtons(playing) {
+            // Floating Button
+            const floatBtn = document.getElementById('musicToggleBtn');
+            if (floatBtn) {
+                if (playing) {
+                    floatBtn.classList.add('active-music');
+                    floatBtn.classList.remove('music-muted');
+                    floatBtn.innerHTML = '<i class="fa-solid fa-music"></i>';
+                    floatBtn.title = "মিউজিক বন্ধ করুন (Turn Music Off)";
+                } else {
+                    floatBtn.classList.remove('active-music');
+                    floatBtn.classList.add('music-muted');
+                    floatBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                    floatBtn.title = "মিউজিক চালু করুন (Turn Music On)";
+                }
+            }
+
+            // Header Pill Button
+            const headerBtn = document.getElementById('headerMusicBtn');
+            if (headerBtn) {
+                if (playing) {
+                    headerBtn.classList.remove('muted');
+                    headerBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span>Music: ON</span>';
+                } else {
+                    headerBtn.classList.add('muted');
+                    headerBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>Music: OFF</span>';
+                }
+            }
+        }
+
         function startMelody() {
-            if (melodyInterval) clearInterval(melodyInterval);
+            userExplicitlyMuted = false;
+            if (melodyInterval) {
+                clearInterval(melodyInterval);
+                melodyInterval = null;
+            }
+
+            initAudio();
             isMusicPlaying = true;
-            document.getElementById('musicToggleBtn')?.classList.add('active-music');
+            syncMusicButtons(true);
+
+            const activateAudio = () => {
+                if (ambientGain && audioContext) {
+                    try {
+                        ambientGain.gain.cancelScheduledValues(audioContext.currentTime);
+                        ambientGain.gain.setValueAtTime(0.08, audioContext.currentTime);
+                    } catch (e) {}
+                }
+            };
+
+            if (audioContext) {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume().then(activateAudio).catch(() => {});
+                } else {
+                    activateAudio();
+                }
+            }
 
             let step = 0;
             const pattern = [0, 2, 4, 3, 5, 4, 2, 1, 0, 4, 5, 7, 5, 4, 2, 0];
 
             melodyInterval = setInterval(() => {
-                if (!isMusicPlaying) return;
+                if (!isMusicPlaying || userExplicitlyMuted) return;
                 const noteIdx = pattern[step % pattern.length];
                 playSoftNote(scale[noteIdx], 1.6);
                 step++;
@@ -1362,23 +1467,45 @@
         }
 
         function stopMelody() {
+            userExplicitlyMuted = true;
             isMusicPlaying = false;
+
             if (melodyInterval) {
                 clearInterval(melodyInterval);
                 melodyInterval = null;
             }
-            document.getElementById('musicToggleBtn')?.classList.remove('active-music');
+
+            // 1. Immediately cut off all active playing oscillators
+            activeOscillators.forEach(osc => {
+                try {
+                    osc.stop();
+                    osc.disconnect();
+                } catch (e) {}
+            });
+            activeOscillators = [];
+
+            // 2. Immediately mute master gain node
+            if (ambientGain && audioContext) {
+                try {
+                    ambientGain.gain.cancelScheduledValues(audioContext.currentTime);
+                    ambientGain.gain.setValueAtTime(0, audioContext.currentTime);
+                } catch (e) {}
+            }
+
+            // 3. Suspend AudioContext to guarantee total silence at hardware level
+            if (audioContext && audioContext.state === 'running') {
+                try {
+                    audioContext.suspend().catch(() => {});
+                } catch (e) {}
+            }
+
+            syncMusicButtons(false);
         }
 
         function toggleMusic() {
-            if (!audioContext) initAudio();
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-
             if (isMusicPlaying) {
                 stopMelody();
-                showToast("মিউজিক বন্ধ করা হয়েছে");
+                showToast("মিউজিক বন্ধ করা হয়েছে 🔇");
             } else {
                 startMelody();
                 showToast("মিউজিক চালু করা হয়েছে 🎶");
@@ -1433,11 +1560,8 @@
                     }
                 }, 400);
 
-                // Start gentle background music
-                initAudio();
-                if (audioContext && audioContext.state === 'suspended') {
-                    audioContext.resume().then(() => startMelody()).catch(() => {});
-                } else {
+                // Start gentle background music only if user didn't mute it
+                if (!userExplicitlyMuted) {
                     startMelody();
                 }
 
